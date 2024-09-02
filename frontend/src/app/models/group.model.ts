@@ -1,17 +1,17 @@
 export class Group {
     id: number;
     name: string;
-    members: string[];
-    applications: string[];
-    admins: string[];
+    memberId: number[];
+    userAppId: number[];
+    adminId: number[];
 
     constructor (id: number, name: string,
-        members: string[], applications: string[], admins: string[]) {
+        memberId: number[], userAppId: number[], adminId: number[]) {
 
         this.id = id;
         this.name = name;
-        this.members = members;
-        this.applications = applications;
-        this.admins = admins;
+        this.memberId = memberId;
+        this.userAppId = userAppId;
+        this.adminId = adminId;
     }
 }
