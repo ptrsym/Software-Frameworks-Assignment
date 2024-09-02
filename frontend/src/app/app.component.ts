@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { User } from './models/user.model';
+import { AuthService } from './services/AuthService';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,11 +14,22 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit {
 
+  isLoggedIn: boolean = false;
+
+  constructor(private authService: AuthService) {}
+
   title = 'ChatApp';
   users: User[] = [];
 
+  logout(): void {
+    this.authService.logout();
+    this.isLoggedIn = false;
+  }
+
   ngOnInit(): void {
 
+    //check if a user is logged in
+    this.isLoggedIn = this.authService.isAuthenticated();
 
     //initialise main component with storage values
 
@@ -34,7 +46,6 @@ export class AppComponent implements OnInit {
       localStorage.setItem('groupadmins', JSON.stringify([]));
     }
 
-
     // add a default super admin if it doesnt exist
       this.users = JSON.parse(localStorage.getItem('users') || '[]');
 
@@ -50,8 +61,6 @@ export class AppComponent implements OnInit {
         this.users.push(defaultSuper);
         localStorage.setItem('users', JSON.stringify(this.users));
       }
-
-      console.log(this.users)
   }
 
 }
