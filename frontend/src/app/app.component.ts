@@ -38,7 +38,12 @@ export class AppComponent implements OnInit {
     });
 
     //check if a user is logged in
-    this.isLoggedIn = this.authService.isAuthenticated();
+    if (this.authService.isAuthenticated()) {
+      this.isLoggedIn = true;
+      this.router.navigate(['/dashboard'])
+    } else {
+      this.router.navigate(['/login'])
+    }
 
     //initialise main component with storage values
 

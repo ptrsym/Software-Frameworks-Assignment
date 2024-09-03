@@ -15,7 +15,7 @@
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a routerLink="/login" class="nav-link active" *ngIf="!isLoggedIn">Login</a>
+            <a routerLink="/sign-up" class="nav-link active" *ngIf="!isLoggedIn">Sign Up</a>
           </li>
           <li class="nav-item">
             <a (click)="logout()" class="nav-link active" *ngIf="isLoggedIn">Logout</a>
@@ -24,22 +24,9 @@
       </div>
     </div>
   </nav>
+<router-outlet></router-outlet>
 
 
-
-
-  <div class="container mt-4">
-    <h1>Users</h1>
-<ul class="list-group">
-  <li *ngFor="let user of users" class="list-group-item">
-      ID: {{user.id}} <br>
-      Username: {{user.username}} <br>
-      Email: {{user.email}} <br>
-      Roles: {{user.roles.join(', ')}} <br>
-      Groups: {{user.groups.length ? user.groups.join(', ') : 'None'}} <br>
-  </li>
-</ul>
-  </div>
 
 
 
