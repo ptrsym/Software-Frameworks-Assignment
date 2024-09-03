@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router';
+import { RouterOutlet, RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { User } from './models/user.model';
 import { AuthService } from './services/AuthService';
@@ -15,8 +15,9 @@ import { CommonModule } from '@angular/common';
 export class AppComponent implements OnInit {
 
   isLoggedIn: boolean = false;
+  currentRoute: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   title = 'ChatApp';
   users: User[] = [];
@@ -27,6 +28,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    //subscribe to the current route
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.urlAfterRedirects;
+      }
+    });
 
     //check if a user is logged in
     this.isLoggedIn = this.authService.isAuthenticated();

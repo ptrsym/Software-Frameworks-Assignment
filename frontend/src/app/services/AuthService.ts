@@ -27,7 +27,7 @@ export class AuthService {
         return btoa(payload);
     }
 
-    // method to find a user's roles based on their active token
+    //find a user's roles based on their active token
 
     getRoles(): string[] {
         const encodedToken = sessionStorage.getItem('authToken');
@@ -39,12 +39,28 @@ export class AuthService {
         return [];
     }
 
+    // get the user roles and return the highest permission of the active token
+
+    getPermissions(): string {
+        const roles = this.getRoles();
+        const permissionPrio = ['superadmin', 'groupadmin', 'user']
+        for (const permission of permissionPrio) {
+            if (roles.includes(permission)) {
+                return permission;
+            }
+            }
+        return 'user';
+        }
+    
+    //helper function for login to find a user from storage
+
     private findUser(username: string, password: string): User | undefined {
         return this.userService.getUsers().find(u => u.username === username && u.password === password);
 
     }
 
-    // login handler
+    // login handler store a token and redirect to dash on login
+
     login(username: string, password: string): void {
         const user = this.findUser(username, password);
         if (user) {

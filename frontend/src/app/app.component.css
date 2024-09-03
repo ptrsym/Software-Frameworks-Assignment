@@ -1,6 +1,6 @@
 :host {
     display: block;
     min-height: 100vh; /* Ensure the component covers the full height */
-    background-color: #343a40; /* Set the same color as the body */
+    background-color: #343a40; 
     color: #f8f9fa; /* Light text color */
   }

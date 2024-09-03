@@ -7,22 +7,26 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link" [class.active]="currentRoute === '/dashboard'" routerLink="/dashboard" *ngIf="isLoggedIn">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/dashboard" *ngIf="">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            <a class="nav-link" [class.active]="currentRoute === '/groups'" routerLink='/groups' *ngIf="isLoggedIn">Groups</a>
           </li>
         </ul>
-        <ul>
-          <li class="nav-item"><a routerLink="/login" class="nav-link" *ngIf="!isLoggedIn">Login</a></li>
-          <li class="nav-item"><a (click)="logout()" class="nav-link" *ngIf="isLoggedIn">Logout</a></li>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a routerLink="/login" class="nav-link active" *ngIf="!isLoggedIn">Login</a>
+          </li>
+          <li class="nav-item">
+            <a (click)="logout()" class="nav-link active" *ngIf="isLoggedIn">Logout</a>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
+
+
+
 
   <div class="container mt-4">
     <h1>Users</h1>
