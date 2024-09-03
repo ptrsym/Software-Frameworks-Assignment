@@ -61,13 +61,14 @@ export class AuthService {
 
     // login handler store a token and redirect to dash on login
 
-    login(username: string, password: string): void {
+    login(username: string, password: string): boolean {
         const user = this.findUser(username, password);
         if (user) {
             const token = this.generateToken(user);
             sessionStorage.setItem('authToken', token);
-            this.router.navigate(['/dashboard']);
+            return true;
         }
+        return false;
     }
 
     // logout handler

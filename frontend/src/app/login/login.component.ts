@@ -18,6 +18,12 @@ export class LoginComponent {
   password: string = '';
   errormsg: string = '';
 
-
-
+  onSubmit() :void {
+    if (this.authService.login(this.username, this.password)) {
+      this.router.navigate(['/dashboard']);
+      this.errormsg = '';
+    } else {
+      this.errormsg = 'Invalid login details, please try again';
+    }    
+  }
 }
