@@ -6,7 +6,7 @@ import { Group } from '../models/group.model';
 @Component({
   selector: 'app-group-view',
   standalone: true,
-  imports: [ActivatedRoute],
+  imports: [],
   templateUrl: './group-view.component.html',
   styleUrl: './group-view.component.css'
 })

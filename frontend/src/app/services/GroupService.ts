@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Group } from "../models/group.model";
 import { BehaviorSubject } from "rxjs";
 
-Injectable({
+@Injectable({
     providedIn: 'root',
 })
 
