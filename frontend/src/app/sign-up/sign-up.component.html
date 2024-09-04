@@ -6,23 +6,18 @@
             <h4>Sign Up</h4>
           </div>
           <div class="card-body">
-            <form (ngSubmit)="onSubmit()" #signUpForm="ngForm">
+            <form (ngSubmit)="onSubmit()">
               <div class="form-group mb-3">
                 <label for="username">Username</label>
                 <input
                   type="text"
                   id="username"
                   class="form-control"
-                  placeholder="Enter your username"
+                  placeholder="Enter username"
                   required
-                  [(ngModel)]="user.username"
+                  [(ngModel)]="username"
                   name="username"
-                  #username="ngModel"
-                  [ngClass]="{ 'is-invalid': username.invalid && (username.dirty || username.touched) }"
                 />
-                <div *ngIf="username.invalid && (username.dirty || username.touched)" class="invalid-feedback">
-                  Username is required.
-                </div>
               </div>
   
               <div class="form-group mb-3">
@@ -31,16 +26,11 @@
                   type="email"
                   id="email"
                   class="form-control"
-                  placeholder="Enter your email"
+                  placeholder="Enter email"
                   required
-                  [(ngModel)]="user.email"
+                  [(ngModel)]="email"
                   name="email"
-                  #email="ngModel"
-                  [ngClass]="{ 'is-invalid': email.invalid && (email.dirty || email.touched) }"
                 />
-                <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
-                  Valid email is required.
-                </div>
               </div>
   
               <div class="form-group mb-3">
@@ -49,16 +39,14 @@
                   type="password"
                   id="password"
                   class="form-control"
-                  placeholder="Enter your password"
+                  placeholder="Enter password"
                   required
-                  [(ngModel)]="user.password"
+                  [(ngModel)]="password"
                   name="password"
-                  #password="ngModel"
-                  [ngClass]="{ 'is-invalid': password.invalid && (password.dirty || password.touched) }"
                 />
-                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="invalid-feedback">
-                  Password is required.
-                </div>
+              </div>
+              <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+                {{errorMessage}}
               </div>
   
               <button type="submit" class="btn btn-primary">Sign Up</button>
