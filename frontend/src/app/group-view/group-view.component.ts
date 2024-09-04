@@ -20,7 +20,7 @@ export class GroupViewComponent implements OnInit{
   ngOnInit(): void {
     this.groupIdParam = this.route.snapshot.paramMap.get('groupId') || '';
     this.groupId = this.groupIdParam ? parseInt(this.groupIdParam, 10): 0;
-    this.group = this.groupService.getGroupById(this.groupId);
+    this.group = this.groupService.getGroupByGroupId(this.groupId);
     if (this.group) {
       this.groupService.setViewedGroup(this.group);
     }

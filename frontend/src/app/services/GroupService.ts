@@ -22,9 +22,14 @@ export class GroupService {
         return groups ? JSON.parse(groups) : [];
     }
 
-    getGroupById (id: number): Group | undefined {
+    getGroupByGroupId (id: number): Group |  undefined {
         const groups = this.getGroups();
         return groups.find(group => group.id === id);
+    }
+
+    getGroupsByUserId(userId: number): Group[] {
+        const groups = this.getGroups();
+        return groups.filter(group => group.memberId.includes(userId));
     }
 
 

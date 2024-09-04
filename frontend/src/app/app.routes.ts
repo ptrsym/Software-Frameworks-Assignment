@@ -12,7 +12,7 @@ export const routes: Routes = [
     {path: "login", component:LoginComponent},
     {path: "dashboard", component:DashboardComponent},
     {path: "groups", component:GroupsComponent},
-    {path: "group/:groupIf", component:GroupViewComponent},
+    {path: "group/:groupId", component:GroupViewComponent},
     {path: "manage-members", component:ManageMembersComponent},
     {path: "manage-reports", component:ManageReportsComponent} 
 ];

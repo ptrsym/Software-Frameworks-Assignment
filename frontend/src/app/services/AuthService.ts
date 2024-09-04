@@ -44,6 +44,24 @@ export class AuthService {
         return [];
     }
 
+    getUserById(): User | undefined {
+        const encodedToken = sessionStorage.getItem('authToken');
+       if (encodedToken) {
+            try {
+                const decodedToken = atob(encodedToken);
+                const user = JSON.parse(decodedToken);
+                const id = user.id;
+                const usersString = localStorage.getItem('users');
+                const usersObject = usersString ? JSON.parse(usersString) : [];
+                return usersObject.find((u: User) => u.id === id);
+            } catch (error) {
+                console.error('Error decoding token or parsing users:', error);
+                return undefined;
+            }
+        }
+        return undefined;
+    }
+
     // get the user roles and return the highest permission of the active token
 
     getPermissions(): string {
