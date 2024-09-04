@@ -3,12 +3,19 @@ export class User {
     username: string;
     email: string;
     password: string;
-    profilePicture?: string;
+    profilePicture: string;
     roles: string[];
     groups: number[];
 
-    constructor (id: number, username: string, email: string,
-         password: string, roles: string[], groups: number[], profilePicture?: string) {
+    constructor (
+      id: number,
+      username: string, 
+      email: string,
+      password: string, 
+      roles: string[] = ['user'], 
+      groups: number[] = [], 
+      profilePicture: string = ''
+   ) {
             this.id = id;
             this.username = username;
             this.email = email;
