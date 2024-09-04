@@ -23,11 +23,14 @@
           </li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <!-- Sign Up Button -->
           <li class="nav-item">
-            <a routerLink="/sign-up" class="nav-link active" *ngIf="!isLoggedIn">Sign Up</a>
+            <button class="btn btn-primary" *ngIf="!isLoggedIn" (click)="navigateToSignUp()">Sign Up</button>
           </li>
+          
+          <!-- Logout Button -->
           <li class="nav-item">
-            <a (click)="logout()" class="nav-link active" *ngIf="isLoggedIn">Logout</a>
+            <button class="btn btn-danger" *ngIf="isLoggedIn" (click)="logout()">Logout</button>
           </li>
         </ul>
       </div>

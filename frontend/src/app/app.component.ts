@@ -34,6 +34,10 @@ export class AppComponent implements OnInit {
     this.isLoggedIn = false;
   }
 
+  navigateToSignUp() {
+    this.router.navigate(['/sign-up']);
+  }
+
   ngOnInit(): void {
 
     //subscribe to the current route
