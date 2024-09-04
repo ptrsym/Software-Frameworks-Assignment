@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { User } from "../models/user.model";
 import { UserService } from "./UserService";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -11,8 +12,12 @@ export class AuthService {
 
     constructor(private router: Router, private userService: UserService) { }
 
-    // flag to check if a user is logged in
+    //setup and observable for the current user's role
+    private currentUserRoleSubject = new BehaviorSubject<string | null> (null);
+    userRole$ = this.currentUserRoleSubject.asObservable();
 
+
+    // flag to check if a user is logged in
     isAuthenticated(): boolean {
         return !!sessionStorage.getItem('authToken');
     }
@@ -43,7 +48,7 @@ export class AuthService {
 
     getPermissions(): string {
         const roles = this.getRoles();
-        const permissionPrio = ['superadmin', 'groupadmin', 'user']
+        const permissionPrio = ['SuperAdmin', 'GroupAdmin', 'user']
         for (const permission of permissionPrio) {
             if (roles.includes(permission)) {
                 return permission;
@@ -66,6 +71,8 @@ export class AuthService {
         if (user) {
             const token = this.generateToken(user);
             sessionStorage.setItem('authToken', token);
+            const userRole = this.getPermissions();
+            this.currentUserRoleSubject.next(userRole);
             return true;
         }
         return false;
@@ -74,6 +81,7 @@ export class AuthService {
     // logout handler
     logout(): void {
         sessionStorage.removeItem('authToken');
+        this.currentUserRoleSubject.next(null);
         this.router.navigate(['/login']);
     }
 

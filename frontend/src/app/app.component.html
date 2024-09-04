@@ -18,8 +18,8 @@
           <li class="nav-item" *ngIf="isLoggedIn">
             <a class="nav-link" [class.active]="currentRoute === '/groups'" routerLink='/groups'>Groups</a>
           </li>
-          <li class="nav-item" *ngIf="isViewingGroup">
-            <a class="nav-link" [class.active]="currentRoute === '/group/' + viewedGroupId" routerLink="'/groups' + viewedGroupId">{{ viewedGroupName }}</a>
+          <li class="nav-item" *ngIf="currentGroup$ | async as group">
+            <a class="nav-link" [class.active]="currentRoute === '/group/' + group.id" routerLink="'/groups' + group.id">{{ group.name }}</a>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

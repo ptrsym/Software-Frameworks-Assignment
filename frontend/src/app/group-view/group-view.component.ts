@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Group } from '../models/group.model';
 import { GroupService } from '../services/GroupService';
+import { Group } from '../models/group.model';
 
 @Component({
   selector: 'app-group-view',
@@ -21,6 +21,9 @@ export class GroupViewComponent implements OnInit{
     this.groupIdParam = this.route.snapshot.paramMap.get('groupId') || '';
     this.groupId = this.groupIdParam ? parseInt(this.groupIdParam, 10): 0;
     this.group = this.groupService.getGroupById(this.groupId);
+    if (this.group) {
+      this.groupService.setViewedGroup(this.group);
+    }
   }
 
 }

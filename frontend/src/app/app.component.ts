@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { User } from './models/user.model';
+import { Group } from './models/group.model';
+import { GroupService } from './services/GroupService';
 import { AuthService } from './services/AuthService';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,10 +17,14 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent implements OnInit {
 
+  currentGroup$: Observable<Group | null>;
   isLoggedIn: boolean = false;
+  isSuperAdmin: boolean = false;
   currentRoute: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private groupService: GroupService, private authService: AuthService, private router: Router) {
+  this.currentGroup$ = this.groupService.currentGroup$;
+  }
 
   title = 'ChatApp';
   users: User[] = [];
@@ -36,6 +43,11 @@ export class AppComponent implements OnInit {
         this.currentRoute = event.urlAfterRedirects;
       }
     });
+
+    //subscribe to the current user's role
+    this.authService.userRole$.subscribe(role => {
+      this.isSuperAdmin = role ==='SuperAdmin';
+    })
 
     //check if a user is logged in
     if (this.authService.isAuthenticated()) {
@@ -69,7 +81,7 @@ export class AppComponent implements OnInit {
           'super',
           'superadmin@mean.dev',
           '123',
-          ['superadmin'],
+          ['SuperAdmin'],
           []
         );
         this.users.push(defaultSuper);

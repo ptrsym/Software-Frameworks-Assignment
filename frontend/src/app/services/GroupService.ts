@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Group } from "../models/group.model";
+import { BehaviorSubject } from "rxjs";
 
 Injectable({
     providedIn: 'root',
@@ -7,6 +8,14 @@ Injectable({
 
 export class GroupService {
 
+
+    private currentlyViewedGroup = new BehaviorSubject<Group | null>(null);
+    currentGroup$ = this.currentlyViewedGroup.asObservable();
+
+
+    setViewedGroup (group: Group | null): void {
+        this.currentlyViewedGroup.next(group);
+    }
 
     getGroups(): Group[] {
         const groups = localStorage.getItem('groups');
