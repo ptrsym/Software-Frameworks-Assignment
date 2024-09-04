@@ -5,7 +5,7 @@ import { GroupsComponent } from './groups/groups.component';
 import { GroupViewComponent } from './group-view/group-view.component';
 import { ManageMembersComponent } from './manage-members/manage-members.component';
 import { ManageReportsComponent } from './manage-reports/manage-reports.component';
-
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 
 export const routes: Routes = [
@@ -14,5 +14,6 @@ export const routes: Routes = [
     {path: "groups", component:GroupsComponent},
     {path: "group/:groupId", component:GroupViewComponent},
     {path: "manage-members", component:ManageMembersComponent},
-    {path: "manage-reports", component:ManageReportsComponent} 
+    {path: "manage-reports", component:ManageReportsComponent},
+    {path: "sign-up", component:SignUpComponent}
 ];

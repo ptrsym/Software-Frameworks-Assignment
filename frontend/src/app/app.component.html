@@ -23,9 +23,13 @@
           </li>
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <!-- Log In Button (when on Sign Up Page) -->
+          <li class="nav-item">
+            <button class="btn btn-primary" *ngIf="currentRoute === '/sign-up'" (click)="navigateToLogin()">Log In</button>
+          </li>
           <!-- Sign Up Button -->
           <li class="nav-item">
-            <button class="btn btn-primary" *ngIf="!isLoggedIn" (click)="navigateToSignUp()">Sign Up</button>
+            <button class="btn btn-primary" *ngIf="!isLoggedIn && currentRoute !== '/sign-up'" (click)="navigateToSignUp()">Sign Up</button>
           </li>
           
           <!-- Logout Button -->

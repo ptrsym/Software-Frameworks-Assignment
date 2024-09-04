@@ -1,0 +1,20 @@
+.profile-buttons {
+    /* display: flex;
+    justify-content: space-between; */
+}
+
+.img-mask {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgb(0, 0, 0, 0.16);
+  margin-bottom: 1em;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+}

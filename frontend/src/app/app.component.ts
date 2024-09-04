@@ -6,7 +6,8 @@ import { Group } from './models/group.model';
 import { GroupService } from './services/GroupService';
 import { AuthService } from './services/AuthService';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, filter } from 'rxjs';
+
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
   currentGroup$: Observable<Group | null>;
   isLoggedIn: boolean = false;
   isSuperAdmin: boolean = false;
+  isOnSignUpPage = false;
   currentRoute: string = '';
 
   constructor(private groupService: GroupService, private authService: AuthService, private router: Router) {
@@ -36,6 +38,10 @@ export class AppComponent implements OnInit {
 
   navigateToSignUp() {
     this.router.navigate(['/sign-up']);
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 
   ngOnInit(): void {

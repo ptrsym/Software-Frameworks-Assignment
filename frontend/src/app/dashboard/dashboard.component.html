@@ -7,10 +7,15 @@
             <h4>Profile Settings</h4>
           </div>
           <div class="card-body">
+            <div class="img-mask">
+                <img [src]="userProfile.profilePicture || 'assets/placeholder.png'" alt="Profile picture">
+            </div>
             <p><strong>Username:</strong> {{ userProfile.username }}</p>
             <p><strong>Email:</strong> {{ userProfile.email }}</p>
-            <button class="btn btn-primary" (click)="editProfile()">Edit Profile</button>
-            <button class="btn btn-danger mt-2" (click)="deleteProfile()">Delete Profile</button>
+            <div class="profile-buttons">
+                <button class="btn btn-primary" (click)="editProfile()">Edit Profile</button>
+                <button class="btn btn-danger" (click)="deleteProfile()">Delete Profile</button>
+            </div>
           </div>
         </div>
       </div>
