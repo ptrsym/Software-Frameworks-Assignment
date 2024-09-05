@@ -40,21 +40,12 @@ export class PendingApplicationsComponent implements OnInit{
     return this.userService.getUserNameById(userId);
   }
 
-
-  close(): void {
-
-  }
-
-
   approve(userId: number): void {
-    const group = this.groupService.getGroups();
-    
-
+    this.groupService.approveApplication(userId);
   }
-
 
   reject(userId: number): void {
-
+    this.groupService.rejectApplication(userId);
   }
 
 }
