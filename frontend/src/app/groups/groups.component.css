@@ -1,41 +1,48 @@
-/* Ensure buttons have the same size */
+/* General Button Styling */
 .btn {
-    width: 120px;
-    margin: 0.5rem;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
   }
   
-  /* Make the Create Group button and Cancel button the same size */
-  .btn-primary, .btn-danger {
-    width: 120px;
-    margin: 0.5rem;
+  /* Button Colors */
+  .btn.green {
+    background-color: #28a745; /* Green */
+    color: white;
   }
   
-  /* Specific colors for group actions */
-  .btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
+  .btn.red {
+    background-color: #dc3545; /* Red */
+    color: white;
   }
   
-  .btn-info {
-    background-color: #17a2b8;
-    border-color: #17a2b8;
+  .btn.blue {
+    background-color: #007bff; /* Blue */
+    color: white;
   }
   
-  .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
+  /* Button Hover Effects */
+  .btn:hover {
+    opacity: 0.8;
   }
   
-  /* Form width and button margin adjustments */
-  .form-control.w-50 {
-    width: 50%;
+  /* Error Message Styling */
+  .error-message {
+    color: #dc3545; /* Red */
+    font-size: 14px;
+    margin: 10px 0;
   }
   
-  .me-2 {
-    margin-right: 0.5rem;
-  }
-  
-  .mt-3 {
-    margin-top: 1rem;
+  /* Group Card Styling */
+  .group-card {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
   }
   

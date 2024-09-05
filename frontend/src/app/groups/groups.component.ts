@@ -22,8 +22,14 @@ export class GroupsComponent implements OnInit{
   currentUserId: number = 0;
   newGroupName: string = '';
   showCreateGroupForm: boolean = false;
+  errorMessage: string | null = null;
 
-  constructor(private groupService: GroupService, private userService: UserService, private authService: AuthService) {}
+  constructor(
+    private groupService: GroupService,
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router
+    ) {}
 
 
   getName(id: number): string {
@@ -34,6 +40,12 @@ export class GroupsComponent implements OnInit{
     this.updateGroups();
     this.currentUserId = this.authService.getUserId();
     this.currentUserRole = this.authService.getPermissions();
+    console.log(this.currentUserRole);
+    console.log(this.currentUserId);
+  }
+
+  viewGroup(group: Group): void {
+    this.router.navigate([`/groups/${group.id}`]);
   }
 
   updateGroups(): void {
@@ -59,8 +71,13 @@ export class GroupsComponent implements OnInit{
     this.updateGroups();
   }
 
-  remove(group: Group): void {
+  leave(group: Group): void {
     this.groupService.leaveGroup(group.id, this.currentUserId);
+    this.updateGroups();
+  }
+
+  delete(groupId: number): void {
+    this.groupService.deleteGroup(groupId);
     this.updateGroups();
   }
 
@@ -77,21 +94,25 @@ export class GroupsComponent implements OnInit{
   }
 
   createGroup(): void {
-    try {
-      this.groupService.createGroup(this.newGroupName, this.currentUserId);
+    if (this.groupService.createGroup(this.newGroupName, this.currentUserId)){
+      this.errorMessage='';
       this.updateGroups();
       this.newGroupName = '';
       this.showCreateGroupForm = false;
-    }
-    catch (error) {
-      console.log(error);
+    } else {
+      this.errorMessage="error creating group, duplicate group names aren't allowed."
+      console.log('naming error')
     }
   }
-
+  
   getAdminNames(adminIds: number[]): string {
     return adminIds.map(id => this.userService.getUserNameById(id)).join(', ');
   }
 
+  cancelCreateGroup(): void{
+    this.showCreateGroupForm = false;
+    this.errorMessage = null;
+  }
 
 }
 

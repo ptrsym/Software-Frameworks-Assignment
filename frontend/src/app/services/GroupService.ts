@@ -117,7 +117,7 @@ export class GroupService {
     } else {console.log(`error leaving group as admin - ${userId} not an admin of group`)}
     }
 
-    createGroup(groupName: string, creatorId: number): void {
+    createGroup(groupName: string, creatorId: number): boolean {
         if (this.validateGroupName(groupName)) {
             const groups = this.getGroups();
             const newGroup = new Group(
@@ -129,9 +129,25 @@ export class GroupService {
             )
             groups.push(newGroup);
             this.setGroups(groups);
+            return true;
             console.log(`created new group ${groupName} with ${creatorId} as admin`);
-        } else {console.log(`error creating group ${groupName} already exists`)}
+        } else {
+            console.log(`error creating group ${groupName} already exists`);
+            return false;  
     }
+    }
+
+    deleteGroup(groupId: number): void {
+        const groups = this.getGroups();
+        const groupIndex = groups.findIndex(group => group.id === groupId); //find group by Id
+
+        if (groupIndex !== -1) {
+            groups.splice(groupIndex, 1);
+            this.setGroups(groups);
+            console.log(`deleted group ${groupId}`);
+    } else {console.log('error deleting group')}
+
+}
     
     private findLowestGroupId(groups: Group[]) :number {
         let lowestId = 1;
