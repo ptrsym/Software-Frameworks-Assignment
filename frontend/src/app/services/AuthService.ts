@@ -22,6 +22,13 @@ export class AuthService {
         return !!sessionStorage.getItem('authToken');
     }
 
+    restoreUserRole() {
+        if (this.isAuthenticated()) {
+            const userRole = this.getPermissions();
+            this.currentUserRoleSubject.next(userRole);
+        }
+    }
+
     //simulated token for phase 1 implementation
     private generateToken(user: any): string {
         const payload = JSON.stringify({

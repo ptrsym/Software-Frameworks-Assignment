@@ -1,1 +1,31 @@
-<p>manage-members works!</p>
+<div class="admin-panel">
+    <h2>Manage Members</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Roles</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.roles.join(', ') }}</td>
+          <td>
+            <button (click)="openDropdown(user.id)">Manage</button>
+            <div *ngIf="selectedUserId === user.id && dropdownOpen" class="dropdown-menu">
+              <button (click)="promoteToSuperAdmin()">Promote Super</button>
+                 <button (click)="promoteToGroupAdmin()">Promote Admin</button>
+              <button (click)="demoteToUser()">Demote User</button>
+              <button (click)="deleteUser()">Delete User</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

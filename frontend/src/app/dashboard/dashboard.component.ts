@@ -31,8 +31,6 @@ export class DashboardComponent implements OnInit{
       this.userProfile = userProfile;
       this.userGroups = this.groupService.getGroupsByUserId(this.userProfile.id);   
     }
-    
-    console.log(this.userProfile, this.userGroups);
   }
 
   editProfile(): void {

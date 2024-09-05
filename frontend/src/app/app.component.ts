@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterModule, Router, NavigationEnd } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { User } from './models/user.model';
 import { Group } from './models/group.model';
 import { GroupService } from './services/GroupService';
 import { AuthService } from './services/AuthService';
 import { CommonModule } from '@angular/common';
-import { Observable, filter } from 'rxjs';
+import { Observable } from 'rxjs';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule, LoginComponent, CommonModule],
+  imports: [RouterOutlet, RouterModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -46,8 +45,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //subscribe to the current route
+    //checks the authentication state and updates the observable
+    this.authService.restoreUserRole();
 
+    //subscribe to the current route
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.currentRoute = event.urlAfterRedirects;
@@ -56,6 +57,7 @@ export class AppComponent implements OnInit {
 
     //subscribe to the current user's role
     this.authService.userRole$.subscribe(role => {
+      console.log(role);
       this.isSuperAdmin = role ==='SuperAdmin';
       this.isLoggedIn = !!role;
     })
