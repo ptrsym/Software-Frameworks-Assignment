@@ -2,16 +2,16 @@ export class Group {
     id: number;
     name: string;
     memberId: number[];
-    userAppId: number[];
+    pendingUserId: number[];
     adminId: number[];
 
     constructor (id: number, name: string,
-        memberId: number[], userAppId: number[], adminId: number[]) {
+        memberId: number[], pendingUserId: number[], adminId: number[]) {
 
         this.id = id;
         this.name = name;
         this.memberId = memberId;
-        this.userAppId = userAppId;
+        this.pendingUserId = pendingUserId;
         this.adminId = adminId;
     }
 }
