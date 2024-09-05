@@ -1,0 +1,41 @@
+/* Ensure buttons have the same size */
+.btn {
+    width: 120px;
+    margin: 0.5rem;
+  }
+  
+  /* Make the Create Group button and Cancel button the same size */
+  .btn-primary, .btn-danger {
+    width: 120px;
+    margin: 0.5rem;
+  }
+  
+  /* Specific colors for group actions */
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+  }
+  
+  .btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+  }
+  
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+  
+  /* Form width and button margin adjustments */
+  .form-control.w-50 {
+    width: 50%;
+  }
+  
+  .me-2 {
+    margin-right: 0.5rem;
+  }
+  
+  .mt-3 {
+    margin-top: 1rem;
+  }
+  

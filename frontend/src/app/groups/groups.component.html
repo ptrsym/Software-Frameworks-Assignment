@@ -1,0 +1,74 @@
+<div class="container mt-4">
+    <h1>Groups</h1>
+
+    <!-- Create New Group Button -->
+    <div class="mb-3">
+      <button class="btn" [ngClass]="{'btn-primary': !showCreateGroupForm, 'btn-danger': showCreateGroupForm}"
+              (click)="showCreateGroupForm = !showCreateGroupForm">
+        {{ showCreateGroupForm ? 'Cancel' : 'Create New Group' }}
+      </button>
+    </div>
+
+    <!-- New Group Form -->
+    <div *ngIf="showCreateGroupForm" class="mb-3">
+      <form (ngSubmit)="createGroup()" class="d-flex flex-column align-items-center">
+        <div class="mb-3">
+          <label for="groupName" class="form-label">Group Name</label>
+          <input type="text" class="form-control w-50" id="groupName" [(ngModel)]="newGroupName" name="groupName" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Group</button>
+      </form>
+    </div>
+
+    <!-- Groups List -->
+    <div class="list-group">
+      <div *ngFor="let group of groups" class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <h5>{{ group.name }}</h5>
+          <p>Admins: {{ getAdminNames(group.adminId) }}</p>
+          <p>Members: {{ group.memberId.length }}</p>
+        </div>
+        <div class="btn-group">
+          <!-- Show Members Button -->
+          <button class="btn btn-info me-2" (click)="toggleDetails(group)">Show Members</button>
+
+          <!-- Action Buttons -->
+          <ng-container [ngSwitch]="currentUserRole">
+            <!-- User Actions -->
+            <ng-container *ngSwitchCase="'User'">
+              <button *ngIf="!isMember(group) && !isPending(group)" class="btn btn-success me-2" (click)="apply(group)">Apply</button>
+              <button *ngIf="isPending(group)" class="btn btn-primary me-2" (click)="cancel(group)">Cancel Application</button>
+              <button *ngIf="isMember(group)" class="btn btn-danger me-2" (click)="remove(group)">Leave Group</button>
+            </ng-container>
+
+            <!-- Group Admin Actions -->
+            <ng-container *ngSwitchCase="'GroupAdmin'">
+              <button *ngIf="!isMember(group) && !isPending(group)" class="btn btn-success me-2" (click)="apply(group)">Apply</button>
+              <button *ngIf="isPending(group)" class="btn btn-primary me-2" (click)="cancel(group)">Cancel Application</button>
+              <button *ngIf="isMember(group)" class="btn btn-danger me-2" (click)="remove(group)">Leave Group</button>
+              <button *ngIf="canManageGroup(group)" class="btn btn-danger me-2" (click)="remove(group)">Delete Group</button>
+            </ng-container>
+
+            <!-- Super Admin Actions -->
+            <ng-container *ngSwitchCase="'SuperAdmin'">
+              <button *ngIf="!isMember(group) && !isPending(group)" class="btn btn-success me-2" (click)="apply(group)">Apply</button>
+              <button *ngIf="isPending(group)" class="btn btn-primary me-2" (click)="cancel(group)">Cancel Application</button>
+              <button *ngIf="isMember(group)" class="btn btn-danger me-2" (click)="remove(group)">Leave Group</button>
+              <button class="btn btn-danger me-2" (click)="remove(group)">Delete Group</button>
+            </ng-container>
+          </ng-container>
+
+          <!-- Navigate to Group View -->
+          <button class="btn btn-success me-2" [routerLink]="['/group-view', group.id]" *ngIf="isMember(group) || currentUserRole === 'SuperAdmin'">Group View</button>
+        </div>
+
+        <!-- Group Members List -->
+        <div *ngIf="group.detailsOpen" class="mt-3">
+          <h6>Members:</h6>
+          <ul>
+            <li *ngFor="let memberId of group.memberId">{{ getName(memberId) }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</div>

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { User } from "../models/user.model";
 import { UserService } from "./UserService";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +16,16 @@ export class AuthService {
     private currentUserRoleSubject = new BehaviorSubject<string | null> (null);
     userRole$ = this.currentUserRoleSubject.asObservable();
 
+
+    getUserId(): number{
+        const encodedToken = sessionStorage.getItem('authToken');
+        if(encodedToken) {
+            const decodedToken = atob(encodedToken);
+            const user = JSON.parse(decodedToken);
+            return user.id;
+        }
+        return 0
+    }
 
     // flag to check if a user is logged in
     isAuthenticated(): boolean {

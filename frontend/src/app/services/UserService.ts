@@ -47,6 +47,16 @@ export class UserService {
         console.log(`${newUser.username} added`);
     }
 
+    getUserNameById(id: number): string{
+        const users = this.getUsers();
+        const user = users.find(u => u.id === id);
+        if (user){
+            return user.username;
+        } else 
+        {console.log(`can't find user${id}`)};
+        return 'unknown user';
+    }
+
 
 
 }

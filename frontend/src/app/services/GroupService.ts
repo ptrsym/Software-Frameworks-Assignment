@@ -27,8 +27,7 @@ export class GroupService {
     }
 
     getGroupByGroupId (id: number): Group |  undefined {
-        const groups = this.getGroups();
-        return groups.find(group => group.id === id);
+        return this.getGroups().find(group => group.id === id);
     }
 
     getGroupsByUserId(userId: number): Group[] {
