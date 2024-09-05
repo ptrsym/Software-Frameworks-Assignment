@@ -87,6 +87,16 @@ export class GroupViewComponent implements OnInit{
     }
   }
 
+  joinChannel(channelName: string): void {
+    // Logic to add the current user to the channel
+    console.log('Joining channel:', channelName);
+  }
+  
+  removeChannel(channelName: string): void {
+    // Logic to remove the channel from the group
+    console.log('Removing channel:', channelName);
+  }
+
 
   togglePendingApplications(): void {
     this.isApplicationVisible = !this.isApplicationVisible;

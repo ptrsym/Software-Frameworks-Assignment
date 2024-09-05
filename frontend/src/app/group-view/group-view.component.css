@@ -1,5 +1,30 @@
-.btn-pending {
-    background-color: blue;
-    color: white;
-  }
-  
+/* General styles */
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.members-column, .channels-column {
+  width: 45%;
+}
+
+.members-list, .channels-list {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0;
+}
+
+.channel-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.channel-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-pending, .btn-primary, .btn-danger {
+  margin-bottom: 10px;
+}

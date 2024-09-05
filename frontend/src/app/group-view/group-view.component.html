@@ -13,31 +13,37 @@
   <button (click)="addChannel()">Add Channel</button>
 </div>
 
-
 <!-- Include the PendingApplicationsComponent -->
 <app-pending-applications
   *ngIf="isApplicationVisible"
 ></app-pending-applications>
 
-<!-- Other content of GroupViewComponent -->
-<div *ngIf="group">
-  <h3>Group Members</h3>
-  <ul>
-    <li *ngFor="let name of getMemberNames()">
-      {{ name }}
-    </li>
-  </ul>
+<!-- Layout with group members and channel list -->
+<div class="container">
+  <!-- Column for group members -->
+  <div class="members-column">
+    <h3>Group Members</h3>
+    <ul class="members-list">
+      <li *ngFor="let name of getMemberNames()">
+        {{ name }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Column for channel list -->
+  <div class="channels-column">
+    <h3>Channels</h3>
+    <ul class="channels-list">
+      <li *ngFor="let name of channelNames" class="channel-list-item">
+        {{ name }}
+        <div class="channel-actions">
+          <!-- "Join Channel" button, visible to all -->
+          <button class="btn btn-primary join-btn">Join</button>
+
+          <!-- "Remove Channel" button, visible only if the user can manage the group -->
+          <button *ngIf="activeGroup && canManageGroup(activeGroup)" class="btn btn-danger remove-btn">Remove</button>
+        </div>
+      </li>
+    </ul>
+  </div>
 </div>
-
-<!-- Existing group member list -->
-
-<!-- Channel Management -->
-<div *ngIf="group">
-  <h3>Channels</h3>
-  <ul>
-    <li *ngFor="let name of channelNames">
-      {{ name }}
-      <!-- Add buttons for join/leave here -->
-    </li>
-  </ul>
-
