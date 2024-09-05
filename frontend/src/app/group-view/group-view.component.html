@@ -1,1 +1,12 @@
-<p>group-view works!</p>
+<!-- Other content of GroupViewComponent -->
+
+<!-- Button to show pending applications -->
+<button class="btn-pending" *ngIf="activeGroup && canManageGroup(activeGroup)" (click)="togglePendingApplications()">
+    View Pending Applications
+  </button>
+  
+  <!-- Include the PendingApplicationsComponent -->
+  <app-pending-applications *ngIf="isApplicationVisible"></app-pending-applications>
+  
+  <!-- Other content of GroupViewComponent -->
+  

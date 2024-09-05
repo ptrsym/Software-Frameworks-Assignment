@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Group } from "../models/group.model";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable, of } from "rxjs";
 
 @Injectable({
     providedIn: 'root',
@@ -29,6 +29,13 @@ export class GroupService {
     getGroupByGroupId (id: number): Group |  undefined {
         return this.getGroups().find(group => group.id === id);
     }
+
+    getObservableGroupByGroupId(groupId: number): Observable<Group> {
+        const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+        const group = groups.find((g: Group) => g.id === groupId);
+        return of(group);
+      }
+
 
     getGroupsByUserId(userId: number): Group[] {
         const groups = this.getGroups();
