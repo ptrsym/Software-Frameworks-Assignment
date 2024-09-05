@@ -4,6 +4,7 @@ export class Group {
     memberId: number[];
     pendingUserId: number[];
     adminId: number[];
+    detailsOpen?: boolean;
 
     constructor (id: number, name: string,
         memberId: number[], pendingUserId: number[], adminId: number[]) {
