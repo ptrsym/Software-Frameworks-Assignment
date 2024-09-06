@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Group } from "../models/group.model";
+import { Channel } from "../models/channel.model";
 import { BehaviorSubject, Observable, of } from "rxjs";
 
 @Injectable({
@@ -7,10 +8,27 @@ import { BehaviorSubject, Observable, of } from "rxjs";
 })
 
 export class GroupService {
+
+    constructor() {}
     
 
     private currentlyViewedGroup = new BehaviorSubject<Group | null>(null);
     currentGroup$ = this.currentlyViewedGroup.asObservable();
+
+    private channelsSubject = new BehaviorSubject<Channel[]>(this.getChannels());
+    channels$ = this.channelsSubject.asObservable();
+
+
+
+    private updateChannels(): void{
+        const channels = this.getChannels();
+        this.channelsSubject.next(channels);
+    }
+
+    getChannels(): Channel[] {
+        const channels = localStorage.getItem('channels');
+        return channels ? JSON.parse(channels): [];
+    }
 
 
     addChannelToGroup(groupId: number, channelId: number): void{
@@ -28,6 +46,22 @@ export class GroupService {
             }
         } else {
             console.error(`Group with ID ${groupId} not found`);
+        }
+    }
+
+    removeChannelFromGroup(groupId: number, channelId: number): void {
+        const group = this.currentlyViewedGroup.value;
+        if (group) {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+            const groupIndex = groups.findIndex((g: Group) => g.id === group.id);
+            if (groupIndex !== -1) {
+                groups[groupIndex].channelId = groups[groupIndex].channelId.filter((id: number) => id !== channelId);
+                this.setGroups(groups);
+                this.updateChannels();
+                console.log('Channel removed: ', channelId);
+            }
+        }else {
+            console.error(`Group with ID ${groupId} not found`)
         }
     }
     

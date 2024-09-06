@@ -41,7 +41,7 @@
           <button class="btn btn-primary join-btn">Join</button>
 
           <!-- "Remove Channel" button, visible only if the user can manage the group -->
-          <button *ngIf="activeGroup && canManageGroup(activeGroup)" class="btn btn-danger remove-btn">Remove</button>
+          <button *ngIf="activeGroup && canManageGroup(activeGroup)" (click)="removeChannel(getChannelIdByName(name))" class="btn btn-danger remove-btn">Remove</button>
         </div>
       </li>
     </ul>

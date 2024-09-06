@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GroupService } from '../services/GroupService';
 import { UserService } from '../services/UserService';
@@ -9,6 +9,7 @@ import { PendingApplicationsComponent } from '../pending-applications/pending-ap
 import { Group } from '../models/group.model';
 import { Channel } from '../models/channel.model';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-group-view',
@@ -17,7 +18,9 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './group-view.component.html',
   styleUrl: './group-view.component.css'
 })
-export class GroupViewComponent implements OnInit{
+export class GroupViewComponent implements OnInit, OnDestroy{
+
+  private channelsSubscription: Subscription = new Subscription();
   groupId!: number;
   groupIdParam!: string;
   group: Group | undefined
@@ -38,6 +41,11 @@ export class GroupViewComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+
+    this.channelsSubscription = this.groupService.channels$.subscribe(channels => {
+      this.channelNames = this.getChannelNames(this.activeChannels);
+    });
+
     this.groupIdParam = this.route.snapshot.paramMap.get('groupId') || '';
     this.groupId = this.groupIdParam ? parseInt(this.groupIdParam, 10): 0;
 
@@ -55,19 +63,9 @@ export class GroupViewComponent implements OnInit{
       this.currentUserRole = this.authService.getPermissions();
   }
 
-  //   this.group = this.groupService.getGroupByGroupId(this.groupId);
-  //   this.channels = this.channelService.getChannels();
-  //   if (this.group) {
-  //     this.groupService.setViewedGroup(this.group);
-  //     this.activeGroup = this.group;
-  //     this.activeChannels = this.group.channelId
-  //     this.channelNames = this.getChannelNames(this.activeChannels);
-  //   }
-  //   this.currentUserId = this.authService.getUserId();
-  //   this.currentUserRole = this.authService.getPermissions();
-  //   console.log(this.currentUserRole);
-  //   console.log(this.currentUserId);
-  // }
+  ngOnDestroy(): void {
+    this.channelsSubscription.unsubscribe();
+  }
 
   getChannelNames(channelIds: number[]): string[] {
      return channelIds.map(id => this.channelService.getChannelNameById(id));
@@ -87,15 +85,30 @@ export class GroupViewComponent implements OnInit{
     }
   }
 
+
   joinChannel(channelName: string): void {
     // Logic to add the current user to the channel
     console.log('Joining channel:', channelName);
   }
   
-  removeChannel(channelName: string): void {
-    // Logic to remove the channel from the group
-    console.log('Removing channel:', channelName);
+  removeChannel(channelId: number): void {
+    if (this.activeGroup) {
+      this.groupService.removeChannelFromGroup(this.activeGroup.id, channelId);
+    }
   }
+
+  getChannelIdByName(channelName: string): number{
+    const channels = JSON.parse(localStorage.getItem('channels') || '[]');
+    const targetChannel = channels.find((c: Channel) => c.name === channelName);
+    if (targetChannel) {
+      return targetChannel.id;
+    } else {
+      console.error('channel not found for name', channelName);
+      return 0;
+    }
+  }
+
+
 
 
   togglePendingApplications(): void {
