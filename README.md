@@ -9,6 +9,7 @@ The server side code is contained in the 'backend' directory and the frontend co
 ### Branching
 
 Branches from main were created when implementing each feature e.g. to implement a frontend service a branch would be created named `feature/frontend-service-name`. <br> This branch would be developed until the feature was able to be tested and confirmed working at which point it would be merged back into the main branch. <br>
+Branches were made for components, documentation, services and models for development.
 
 ### Updates
 Regular commits would be made to the local/remote repositories when reasonable progress had been made towards the current implementation goal such as a particular function was drafted without error warnings (but has yet to be tested). <br>
@@ -36,7 +37,29 @@ The attribtues are as follows: <br>
 
 ### Group
 
+A group model represents a group that a User can join to engage with other users through channels. The properties of a group are as follows: <br>
+
+<br>
+`id:` A unique number identifier of the group that can be used as a primary key. <br>
+<br>
+`name:` A string identifier for the group that should also be unique. <br>
+<br>
+`memberId:` An array of numbers representing the unique Ids of each registered group member <br>
+<br>
+`pendingUserId:` An array of numbers with the unique identifiers of all users currently applying to join the group. <br>
+<br>
+`adminId:` An array of numbers that represent the unique identifier of the admins of this group. <br>
+<br>
+`channelId:` An array of numbers that represent the unique identifier of all the channels made within this group. <br>
+<br>
+`detailsOpen?:` An optional property used in certain components that allow for inspecting more details about the group. <br>
+<br>
+
+
 ### Channel
+
+A channel is a space created within a group where users can join to engage in chat, voice and video conversations with each other. The properties of a channel are as follows:
+
 
 ### GroupAdmin
 
