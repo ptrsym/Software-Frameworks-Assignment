@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Group } from "../models/group.model";
-import { BehaviorSubject } from "rxjs";
+import { Channel } from "../models/channel.model";
+import { BehaviorSubject, Observable, of } from "rxjs";
 
 @Injectable({
     providedIn: 'root',
@@ -8,14 +9,97 @@ import { BehaviorSubject } from "rxjs";
 
 export class GroupService {
 
+    constructor() {}
+    
 
     private currentlyViewedGroup = new BehaviorSubject<Group | null>(null);
     currentGroup$ = this.currentlyViewedGroup.asObservable();
 
+    private channelsSubject = new BehaviorSubject<Channel[]>(this.getChannels());
+    channels$ = this.channelsSubject.asObservable();
 
+
+
+    private updateChannels(): void{
+        const channels = this.getChannels();
+        this.channelsSubject.next(channels);
+    }
+
+    getChannels(): Channel[] {
+        const channels = localStorage.getItem('channels');
+        return channels ? JSON.parse(channels): [];
+    }
+
+
+    addChannelToGroup(groupId: number, channelId: number): void{
+        const group = this.currentlyViewedGroup.value;
+        if (group) {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+            const groupIndex = groups.findIndex((g: Group) => g.id === groupId);
+            if (groupIndex !== -1) {
+                if(!groups[groupIndex].channelId.includes(channelId)) {
+                    groups[groupIndex].channelId.push(channelId);
+                }
+                this.setGroups(groups);
+                this.setViewedGroup(groups[groupIndex]);
+                console.log('Channel added:', channelId);
+            }
+        } else {
+            console.error(`Group with ID ${groupId} not found`);
+        }
+    }
+
+    removeChannelFromGroup(groupId: number, channelId: number): void {
+        const group = this.currentlyViewedGroup.value;
+        if (group) {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+            const groupIndex = groups.findIndex((g: Group) => g.id === group.id);
+            if (groupIndex !== -1) {
+                groups[groupIndex].channelId = groups[groupIndex].channelId.filter((id: number) => id !== channelId);
+                this.setGroups(groups);
+                this.updateChannels();
+                console.log('Channel removed: ', channelId);
+            }
+        }else {
+            console.error(`Group with ID ${groupId} not found`)
+        }
+    }
+    
     setViewedGroup (group: Group | null): void {
         this.currentlyViewedGroup.next(group);
     }
+
+    approveApplication(userId: number): void {
+        const group = this.currentlyViewedGroup.value;
+        if (group) {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+            const groupIndex = groups.findIndex((g: Group) => g.id === group.id);
+            if (groupIndex !== -1) {
+                groups[groupIndex].pendingUserId = group.pendingUserId.filter(id => id !== userId);
+                if (!groups[groupIndex].memberId.includes(userId)) {
+                    groups[groupIndex].memberId.push(userId);
+                }
+                this.setGroups(groups);
+                console.log(`application accepted for ${userId}`)
+                this.currentlyViewedGroup.next(group);
+            }
+        }
+    }
+
+    rejectApplication(userId: number): void {
+        const group = this.currentlyViewedGroup.value;
+        if (group) {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+            const groupIndex = groups.findIndex((g: Group) => g.id === group.id);
+            if (groupIndex !== -1) {
+                groups[groupIndex].pendingUserId = group.pendingUserId.filter(id => id !== userId);
+            }
+            this.setGroups(groups);
+            console.log(`application rejected for ${userId}`);
+            this.currentlyViewedGroup.next(group);
+        }
+    }
+        
 
     getGroups(): Group[] {
         const groups = localStorage.getItem('groups');
@@ -29,6 +113,13 @@ export class GroupService {
     getGroupByGroupId (id: number): Group |  undefined {
         return this.getGroups().find(group => group.id === id);
     }
+
+    getObservableGroupByGroupId(groupId: number): Observable<Group> {
+        const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+        const group = groups.find((g: Group) => g.id === groupId);
+        return of(group);
+      }
+
 
     getGroupsByUserId(userId: number): Group[] {
         const groups = this.getGroups();
@@ -125,7 +216,8 @@ export class GroupService {
                 groupName,
                 [creatorId],
                 [],
-                [creatorId]
+                [creatorId],
+                []
             )
             groups.push(newGroup);
             this.setGroups(groups);

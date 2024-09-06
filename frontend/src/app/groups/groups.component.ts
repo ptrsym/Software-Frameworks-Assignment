@@ -81,9 +81,6 @@ export class GroupsComponent implements OnInit{
     this.updateGroups();
   }
 
-  toggleDetails(group: Group): void{
-    group.detailsOpen = !group.detailsOpen;
-  }
 
   canManageGroup(group: Group): boolean{
     return this.currentUserRole === 'SuperAdmin' || group.adminId.includes(this.currentUserId);
