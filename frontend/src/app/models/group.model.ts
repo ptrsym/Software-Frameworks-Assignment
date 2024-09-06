@@ -7,7 +7,10 @@ export class Group {
     detailsOpen?: boolean;
 
     constructor (id: number, name: string,
-        memberId: number[], pendingUserId: number[], adminId: number[]) {
+        memberId: number[],
+         pendingUserId: number[], 
+         adminId: number[],
+          channelId: number[] = []) {
 
         this.id = id;
         this.name = name;
