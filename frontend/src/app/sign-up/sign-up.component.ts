@@ -49,7 +49,6 @@ export class SignUpComponent {
       return
     }
 
-    console.log('Submitting:', this.username, this.email, this.password);
     this.userService.createUser(this.username, this.email, this.password)
     this.authService.login(this.username, this.password);
     this.router.navigate(['/dashboard']);

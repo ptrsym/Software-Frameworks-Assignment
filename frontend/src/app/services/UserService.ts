@@ -50,7 +50,6 @@ export class UserService {
             password,
         );
         this.updateUser(newUser);
-        console.log(`${newUser.username} added`);
     }
 
     getUserNameById(id: number): string{
@@ -59,7 +58,6 @@ export class UserService {
         if (user){
             return user.username;
         } else 
-        {console.log(`can't find user${id}`)};
         return 'unknown user';
     }
 

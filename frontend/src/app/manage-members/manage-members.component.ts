@@ -28,8 +28,6 @@ export class ManageMembersComponent implements OnInit {
   openDropdown(userId: number): void {
     this.selectedUserId = userId;
     this.dropdownOpen = !this.dropdownOpen;
-    console.log(this.dropdownOpen);
-    console.log(this.selectedUserId);
   }
 
   promoteToGroupAdmin(): void {

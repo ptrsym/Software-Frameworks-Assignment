@@ -75,7 +75,6 @@ export class AppComponent implements OnInit {
 
     //subscribe to the current user's role
     this.authService.userRole$.subscribe(role => {
-      console.log(role);
       this.isSuperAdmin = role ==='SuperAdmin';
       this.isLoggedIn = !!role;
     })

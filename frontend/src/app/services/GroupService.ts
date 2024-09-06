@@ -42,7 +42,6 @@ export class GroupService {
                 }
                 this.setGroups(groups);
                 this.setViewedGroup(groups[groupIndex]);
-                console.log('Channel added:', channelId);
             }
         } else {
             console.error(`Group with ID ${groupId} not found`);
@@ -58,7 +57,6 @@ export class GroupService {
                 groups[groupIndex].channelId = groups[groupIndex].channelId.filter((id: number) => id !== channelId);
                 this.setGroups(groups);
                 this.updateChannels();
-                console.log('Channel removed: ', channelId);
             }
         }else {
             console.error(`Group with ID ${groupId} not found`)
@@ -80,7 +78,6 @@ export class GroupService {
                     groups[groupIndex].memberId.push(userId);
                 }
                 this.setGroups(groups);
-                console.log(`application accepted for ${userId}`)
                 this.currentlyViewedGroup.next(group);
             }
         }
@@ -95,7 +92,6 @@ export class GroupService {
                 groups[groupIndex].pendingUserId = group.pendingUserId.filter(id => id !== userId);
             }
             this.setGroups(groups);
-            console.log(`application rejected for ${userId}`);
             this.currentlyViewedGroup.next(group);
         }
     }
@@ -137,7 +133,7 @@ export class GroupService {
                 groups[appliedGroupIndex] = appliedGroup; // update the groups array
                 this.setGroups(groups); // store updated groups
             }
-        } else {console.log('error finding group to apply to')}
+        }
             
         }
 
@@ -159,9 +155,8 @@ export class GroupService {
 
                 // save the groups array
                 this.setGroups(groups);
-                console.log(`${applyingId} removed from group ${appliedGroupId} at index ${applyingIdIndex}`);
             }
-        } else {console.log('error finding group being applyied to')}
+        }
     }
 
 
@@ -181,9 +176,9 @@ export class GroupService {
                 groups[groupIndex] = groupToLeave;
 
                 this.setGroups(groups);
-                console.log (`${userId} left ${groupId} successfully`);
+
             }
-    } else {console.log('error leaving group')}
+    } 
     }
 
 
@@ -203,9 +198,8 @@ export class GroupService {
                 groups[groupIndex] = groupToLeave;
 
                 this.setGroups(groups);
-                console.log (`${userId} is no longer admin of ${groupId}`);
             }
-    } else {console.log(`error leaving group as admin - ${userId} not an admin of group`)}
+    } 
     }
 
     createGroup(groupName: string, creatorId: number): boolean {
@@ -222,9 +216,7 @@ export class GroupService {
             groups.push(newGroup);
             this.setGroups(groups);
             return true;
-            console.log(`created new group ${groupName} with ${creatorId} as admin`);
         } else {
-            console.log(`error creating group ${groupName} already exists`);
             return false;  
     }
     }
@@ -236,8 +228,8 @@ export class GroupService {
         if (groupIndex !== -1) {
             groups.splice(groupIndex, 1);
             this.setGroups(groups);
-            console.log(`deleted group ${groupId}`);
-    } else {console.log('error deleting group')}
+        
+    } 
 
 }
     

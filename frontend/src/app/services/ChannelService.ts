@@ -19,7 +19,6 @@ export class ChannelService {
         if (targetChannel){
             return targetChannel.name;
         } else {
-            console.log('error finding channel name for id:', channelId, 'in channels:', channels);
             return '';
         }
     }
