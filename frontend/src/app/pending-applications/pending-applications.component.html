@@ -1,0 +1,14 @@
+<div *ngIf="pendingUserIds.length > 0">
+    <h3>Pending Applications</h3>
+    <ul>
+      <li *ngFor="let userId of pendingUserIds">
+        {{ getUserName(userId) }}
+        <button class="btn-success" (click)="approve(userId)">Approve</button>
+        <button class="btn-danger" (click)="reject(userId)">Reject</button>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="pendingUserIds.length === 0">
+    <p>No pending applications.</p>
+  </div>
+  

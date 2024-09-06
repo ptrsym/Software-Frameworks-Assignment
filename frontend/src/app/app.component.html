@@ -1,51 +1,90 @@
-  <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">ChatApp</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item" *ngIf="isLoggedIn">
-            <a class="nav-link" [class.active]="currentRoute === '/dashboard'" routerLink="/dashboard">Dashboard</a>
-          </li>
-          <li class="nav-item" *ngIf="isSuperAdmin">
-            <a class="nav-link" [class.active]="currentRoute === '/manage-members'" routerLink='/manage-members'>Manage Members</a>
-          </li>
-          <li class="nav-item" *ngIf="isSuperAdmin">
-            <a class="nav-link" [class.active]="currentRoute === '/manage-reports'" routerLink='/manage-reports'>Manage Reports</a>
-          </li>
-          <li class="nav-item" *ngIf="isLoggedIn">
-            <a class="nav-link" [class.active]="currentRoute === '/groups'" routerLink='/groups'>Groups</a>
-          </li>
-          <li class="nav-item" *ngIf="currentGroup$ | async as group">
-            <a class="nav-link" [class.active]="currentRoute === '/group/' + group.id" routerLink="'/groups' + group.id">{{ group.name }}</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <!-- Log In Button (when on Sign Up Page) -->
-          <li class="nav-item">
-            <button class="btn btn-primary" *ngIf="currentRoute === '/sign-up'" (click)="navigateToLogin()">Log In</button>
-          </li>
-          <!-- Sign Up Button -->
-          <li class="nav-item">
-            <button class="btn btn-primary" *ngIf="!isLoggedIn && currentRoute !== '/sign-up'" (click)="navigateToSignUp()">Sign Up</button>
-          </li>
-          
-          <!-- Logout Button -->
-          <li class="nav-item">
-            <button class="btn btn-danger" *ngIf="isLoggedIn" (click)="logout()">Logout</button>
-          </li>
-        </ul>
-      </div>
+<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">ChatApp</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a
+            class="nav-link"
+            [class.active]="currentRoute === '/dashboard'"
+            routerLink="/dashboard"
+            >Dashboard</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="isSuperAdmin">
+          <a
+            class="nav-link"
+            [class.active]="currentRoute === '/manage-members'"
+            routerLink="/manage-members"
+            >Manage Members</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="isSuperAdmin">
+          <a
+            class="nav-link"
+            [class.active]="currentRoute === '/manage-reports'"
+            routerLink="/manage-reports"
+            >Manage Reports</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a
+            class="nav-link"
+            [class.active]="currentRoute === '/groups'"
+            routerLink="/groups"
+            >Groups</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="currentGroup$ | async as group">
+          <a
+            class="nav-link"
+            [class.active]="currentRoute === '/groups/' + group.id"
+            [routerLink]="'/groups/' + group.id"
+            >{{ group.name }}</a
+          >
+        </li>
+      </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <!-- Log In Button (when on Sign Up Page) -->
+        <li class="nav-item">
+          <button
+            class="btn btn-primary"
+            *ngIf="currentRoute === '/sign-up'"
+            (click)="navigateToLogin()"
+          >
+            Log In
+          </button>
+        </li>
+        <!-- Sign Up Button -->
+        <li class="nav-item">
+          <button
+            class="btn btn-primary"
+            *ngIf="!isLoggedIn && currentRoute !== '/sign-up'"
+            (click)="navigateToSignUp()"
+          >
+            Sign Up
+          </button>
+        </li>
+
+        <!-- Logout Button -->
+        <li class="nav-item">
+          <button class="btn btn-danger" *ngIf="isLoggedIn" (click)="logout()">
+            Logout
+          </button>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 <router-outlet></router-outlet>
-
-
-
-
-
-
-
-

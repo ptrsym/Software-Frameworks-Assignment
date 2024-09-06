@@ -29,7 +29,7 @@
           <div class="card-body">
             <ul class="list-group">
               <li *ngFor="let group of userGroups" class="list-group-item">
-                <a [routerLink]="['/group', group.id]" class="text-decoration-none">
+                <a [routerLink]="['/groups/', group.id]" class="text-decoration-none">
                   {{ group.name }}
                 </a>
               </li>

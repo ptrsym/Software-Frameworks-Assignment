@@ -48,6 +48,24 @@ export class AppComponent implements OnInit {
     //checks the authentication state and updates the observable
     this.authService.restoreUserRole();
 
+
+    //update currentGroup$
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const groupIdMatch = event.urlAfterRedirects.match(/\/groups\/(\d+)/);
+        if (groupIdMatch) {
+          const groupId = +groupIdMatch[1];
+          this.groupService.getObservableGroupByGroupId(groupId).subscribe(group => {
+            this.groupService.setViewedGroup(group);
+          });
+        } else {
+          this.groupService.setViewedGroup(null);
+        }
+      }
+    })
+
+
+
     //subscribe to the current route
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -57,7 +75,6 @@ export class AppComponent implements OnInit {
 
     //subscribe to the current user's role
     this.authService.userRole$.subscribe(role => {
-      console.log(role);
       this.isSuperAdmin = role ==='SuperAdmin';
       this.isLoggedIn = !!role;
     })

@@ -23,7 +23,6 @@ export class LoginComponent {
     if (this.authService.login(this.username, this.password)) {
       this.router.navigate(['/dashboard']);
       this.errormsg = '';
-      console.log(`${this.username} logged in`);
     } else {
       this.errormsg = 'Invalid login details, please try again';
     }    

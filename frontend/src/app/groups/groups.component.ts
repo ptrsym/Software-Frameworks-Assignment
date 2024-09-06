@@ -40,8 +40,6 @@ export class GroupsComponent implements OnInit{
     this.updateGroups();
     this.currentUserId = this.authService.getUserId();
     this.currentUserRole = this.authService.getPermissions();
-    console.log(this.currentUserRole);
-    console.log(this.currentUserId);
   }
 
   viewGroup(group: Group): void {
@@ -81,9 +79,6 @@ export class GroupsComponent implements OnInit{
     this.updateGroups();
   }
 
-  toggleDetails(group: Group): void{
-    group.detailsOpen = !group.detailsOpen;
-  }
 
   canManageGroup(group: Group): boolean{
     return this.currentUserRole === 'SuperAdmin' || group.adminId.includes(this.currentUserId);
@@ -101,7 +96,6 @@ export class GroupsComponent implements OnInit{
       this.showCreateGroupForm = false;
     } else {
       this.errorMessage="error creating group, duplicate group names aren't allowed."
-      console.log('naming error')
     }
   }
   

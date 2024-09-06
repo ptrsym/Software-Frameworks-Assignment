@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Group } from "../models/group.model";
-import { BehaviorSubject } from "rxjs";
+import { Channel } from "../models/channel.model";
+import { BehaviorSubject, Observable, of } from "rxjs";
 
 @Injectable({
     providedIn: 'root',
@@ -8,14 +9,93 @@ import { BehaviorSubject } from "rxjs";
 
 export class GroupService {
 
+    constructor() {}
+    
 
     private currentlyViewedGroup = new BehaviorSubject<Group | null>(null);
     currentGroup$ = this.currentlyViewedGroup.asObservable();
 
+    private channelsSubject = new BehaviorSubject<Channel[]>(this.getChannels());
+    channels$ = this.channelsSubject.asObservable();
 
+
+
+    private updateChannels(): void{
+        const channels = this.getChannels();
+        this.channelsSubject.next(channels);
+    }
+
+    getChannels(): Channel[] {
+        const channels = localStorage.getItem('channels');
+        return channels ? JSON.parse(channels): [];
+    }
+
+
+    addChannelToGroup(groupId: number, channelId: number): void{
+        const group = this.currentlyViewedGroup.value;
+        if (group) {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+            const groupIndex = groups.findIndex((g: Group) => g.id === groupId);
+            if (groupIndex !== -1) {
+                if(!groups[groupIndex].channelId.includes(channelId)) {
+                    groups[groupIndex].channelId.push(channelId);
+                }
+                this.setGroups(groups);
+                this.setViewedGroup(groups[groupIndex]);
+            }
+        } else {
+            console.error(`Group with ID ${groupId} not found`);
+        }
+    }
+
+    removeChannelFromGroup(groupId: number, channelId: number): void {
+        const group = this.currentlyViewedGroup.value;
+        if (group) {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+            const groupIndex = groups.findIndex((g: Group) => g.id === group.id);
+            if (groupIndex !== -1) {
+                groups[groupIndex].channelId = groups[groupIndex].channelId.filter((id: number) => id !== channelId);
+                this.setGroups(groups);
+                this.updateChannels();
+            }
+        }else {
+            console.error(`Group with ID ${groupId} not found`)
+        }
+    }
+    
     setViewedGroup (group: Group | null): void {
         this.currentlyViewedGroup.next(group);
     }
+
+    approveApplication(userId: number): void {
+        const group = this.currentlyViewedGroup.value;
+        if (group) {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+            const groupIndex = groups.findIndex((g: Group) => g.id === group.id);
+            if (groupIndex !== -1) {
+                groups[groupIndex].pendingUserId = group.pendingUserId.filter(id => id !== userId);
+                if (!groups[groupIndex].memberId.includes(userId)) {
+                    groups[groupIndex].memberId.push(userId);
+                }
+                this.setGroups(groups);
+                this.currentlyViewedGroup.next(group);
+            }
+        }
+    }
+
+    rejectApplication(userId: number): void {
+        const group = this.currentlyViewedGroup.value;
+        if (group) {
+            const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+            const groupIndex = groups.findIndex((g: Group) => g.id === group.id);
+            if (groupIndex !== -1) {
+                groups[groupIndex].pendingUserId = group.pendingUserId.filter(id => id !== userId);
+            }
+            this.setGroups(groups);
+            this.currentlyViewedGroup.next(group);
+        }
+    }
+        
 
     getGroups(): Group[] {
         const groups = localStorage.getItem('groups');
@@ -29,6 +109,13 @@ export class GroupService {
     getGroupByGroupId (id: number): Group |  undefined {
         return this.getGroups().find(group => group.id === id);
     }
+
+    getObservableGroupByGroupId(groupId: number): Observable<Group> {
+        const groups = JSON.parse(localStorage.getItem('groups') || '[]');
+        const group = groups.find((g: Group) => g.id === groupId);
+        return of(group);
+      }
+
 
     getGroupsByUserId(userId: number): Group[] {
         const groups = this.getGroups();
@@ -46,7 +133,7 @@ export class GroupService {
                 groups[appliedGroupIndex] = appliedGroup; // update the groups array
                 this.setGroups(groups); // store updated groups
             }
-        } else {console.log('error finding group to apply to')}
+        }
             
         }
 
@@ -68,9 +155,8 @@ export class GroupService {
 
                 // save the groups array
                 this.setGroups(groups);
-                console.log(`${applyingId} removed from group ${appliedGroupId} at index ${applyingIdIndex}`);
             }
-        } else {console.log('error finding group being applyied to')}
+        }
     }
 
 
@@ -90,9 +176,9 @@ export class GroupService {
                 groups[groupIndex] = groupToLeave;
 
                 this.setGroups(groups);
-                console.log (`${userId} left ${groupId} successfully`);
+
             }
-    } else {console.log('error leaving group')}
+    } 
     }
 
 
@@ -112,9 +198,8 @@ export class GroupService {
                 groups[groupIndex] = groupToLeave;
 
                 this.setGroups(groups);
-                console.log (`${userId} is no longer admin of ${groupId}`);
             }
-    } else {console.log(`error leaving group as admin - ${userId} not an admin of group`)}
+    } 
     }
 
     createGroup(groupName: string, creatorId: number): boolean {
@@ -125,14 +210,13 @@ export class GroupService {
                 groupName,
                 [creatorId],
                 [],
-                [creatorId]
+                [creatorId],
+                []
             )
             groups.push(newGroup);
             this.setGroups(groups);
             return true;
-            console.log(`created new group ${groupName} with ${creatorId} as admin`);
         } else {
-            console.log(`error creating group ${groupName} already exists`);
             return false;  
     }
     }
@@ -144,8 +228,8 @@ export class GroupService {
         if (groupIndex !== -1) {
             groups.splice(groupIndex, 1);
             this.setGroups(groups);
-            console.log(`deleted group ${groupId}`);
-    } else {console.log('error deleting group')}
+        
+    } 
 
 }
     

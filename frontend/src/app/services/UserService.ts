@@ -15,6 +15,12 @@ export class UserService {
         return storedUsers ? JSON.parse(storedUsers): [];
     }
 
+    getUserById(userId: number): User | undefined {
+        const usersString = localStorage.getItem('users');
+        const usersObject = usersString ? JSON.parse(usersString) : []
+        return usersObject.find((u: User) => u.id === userId);
+    }
+
     //updates local stroage with latest users
     setUsers(users: User[]): void {
         localStorage.setItem('users', JSON.stringify(users));
@@ -44,7 +50,6 @@ export class UserService {
             password,
         );
         this.updateUser(newUser);
-        console.log(`${newUser.username} added`);
     }
 
     getUserNameById(id: number): string{
@@ -53,7 +58,6 @@ export class UserService {
         if (user){
             return user.username;
         } else 
-        {console.log(`can't find user${id}`)};
         return 'unknown user';
     }
 
