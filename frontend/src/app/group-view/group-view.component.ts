@@ -85,7 +85,6 @@ export class GroupViewComponent implements OnInit, OnDestroy{
     }
   }
 
-
   joinChannel(channelName: string): void {
     // Logic to add the current user to the channel
     console.log('Joining channel:', channelName);
@@ -107,9 +106,6 @@ export class GroupViewComponent implements OnInit, OnDestroy{
       return 0;
     }
   }
-
-
-
 
   togglePendingApplications(): void {
     this.isApplicationVisible = !this.isApplicationVisible;
